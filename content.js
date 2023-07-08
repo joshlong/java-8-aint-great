@@ -2,9 +2,8 @@ window.addEventListener('load', (event) => {
 
 
     // the following is for start.spring.io today
-
     function defend (){
-        console.log('idiot alert!!! idiot alert!!')
+        window.alert ('idiot alert!!! idiot alert!!')
     }
 
     const javaChoicesContainer = document.querySelector(
