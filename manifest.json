@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Java 8 ain't great",
+  "version": "1.0",
+  "description": "Java 8 ain't great",
+  "icons": {
+    "32": "images/32.png"
+  },
+  "permissions": [
+    "tabCapture", 
+    "offscreen",
+    "scripting"
+  ],
+  "content_scripts": [
+    {
+      "js": ["content.js"],
+      "matches": [
+        "https://start.spring.io/*"
+      ]
+    }
+  ]
+}
