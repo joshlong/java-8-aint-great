@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+<!--    <meta name="viewport" content="width=device-width,initial-scale=1.0">-->
+    <title>
+        A Spring Intervention
+    </title>
+    <style>
+
+
+
+        body {
+            overflow: hidden;
+            height: 100vh;
+            background-color: black;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            perspective: 1500px;
+        }
+
+        .door {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50%;
+            background-color: gray;
+            transition: transform 3s ease;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        #left-door {
+            left: 0;
+            transform-origin: left center;
+            transform: translateZ(-1px);
+        }
+
+        #right-door {
+            right: 0;
+            transform-origin: right center;
+            transform: translateZ(-1px);
+        }
+
+        body.red-strobe {
+            animation: strobe 1s infinite;
+        }
+
+        @keyframes strobe {
+            0%, 100% {background-color: black;}
+            50% {background-color: red;}
+        }
+
+    </style>
+    <script>
+
+
+
+        window.onload = function() {
+            document.getElementById('left-door').style.transform = "translateX(-100%)";
+            document.getElementById('right-door').style.transform = "translateX(100%)";
+            document.body.classList.add('red-strobe');
+            setTimeout(function() {
+                document.body.classList.remove ('red-strobe');
+            }, 10000);
+        };
+
+    </script>
+
+</head>
+<body>
+
+<div id="container">
+    <div id="left-door" class="door"></div>
+    <div id="right-door" class="door"></div>
+</div>
+
+</body>
+</html>

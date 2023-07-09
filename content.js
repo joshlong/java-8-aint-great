@@ -1,6 +1,14 @@
 window.addEventListener('load', (event) => {
 
 
+    const html = `
+    <div id="container">
+        <div id="left-door" class="door"></div>
+        <div id="right-door" class="door"></div>
+    </div>
+    ` ;
+    
+
     // the following is for start.spring.io today
     function defend (){
         window.alert ('idiot alert!!! idiot alert!!')
