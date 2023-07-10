@@ -2,20 +2,19 @@
 <html lang="">
 <head>
     <meta charset="utf-8">
-<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
-<!--    <meta name="viewport" content="width=device-width,initial-scale=1.0">-->
+    <!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <!--    <meta name="viewport" content="width=device-width,initial-scale=1.0">-->
     <title>
         A Spring Intervention
     </title>
     <style>
 
 
-
-        body {
-            overflow: hidden;
+        #spring-intervention {
+            position: relative;
             height: 100vh;
             background-color: black;
-            position: relative;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -50,26 +49,30 @@
             transform: translateZ(-1px);
         }
 
-        body.red-strobe {
+        #spring-intervention.red-strobe {
             animation: strobe 1s infinite;
         }
 
         @keyframes strobe {
-            0%, 100% {background-color: black;}
-            50% {background-color: red;}
+            0%, 100% {
+                background-color: black;
+            }
+            50% {
+                background-color: red;
+            }
         }
 
     </style>
     <script>
 
 
-
-        window.onload = function() {
+        window.onload = function () {
             document.getElementById('left-door').style.transform = "translateX(-100%)";
             document.getElementById('right-door').style.transform = "translateX(100%)";
-            document.body.classList.add('red-strobe');
-            setTimeout(function() {
-                document.body.classList.remove ('red-strobe');
+            let springInterventionContainer = document.getElementById('spring-intervention');
+            springInterventionContainer.classList.add('red-strobe');
+            setTimeout(function () {
+                springInterventionContainer.classList.remove('red-strobe');
             }, 10000);
         };
 
@@ -78,9 +81,12 @@
 </head>
 <body>
 
-<div id="container">
-    <div id="left-door" class="door"></div>
-    <div id="right-door" class="door"></div>
+<div id="spring-intervention">
+
+    <div id="container">
+        <div id="left-door" class="door"></div>
+        <div id="right-door" class="door"></div>
+    </div>
 </div>
 
 </body>

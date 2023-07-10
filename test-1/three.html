@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <!--    <meta name="viewport" content="width=device-width,initial-scale=1.0">-->
+    <title>
+        A Spring Intervention
+    </title>
+
+
+    <script>
+
+        /*
+         * all of this should be used in the plugin's `content.js`
+         */
+        function install() {
+
+            // install html
+
+            function createDivWithAttributes(nodeId, attrs) {
+                const d = document.createElement('div')
+                d.setAttribute('id', nodeId)
+                if (attrs) {
+                    if (attrs.classList) {
+                        attrs.classList.forEach(cn => d.classList.add(cn))
+                    }
+                }
+                return d;
+            }
+
+            document.body.appendChild(createDivWithAttributes('container'))
+            document.getElementById('container').appendChild(createDivWithAttributes('left-door', {classList: ['door']}))
+            document.getElementById('container').appendChild(createDivWithAttributes('right-door', {classList: ['door']}))
+
+            const leftDoor = document.getElementById('left-door');
+            const rightDoor = document.getElementById('right-door');
+            const container = document.getElementById('container');
+
+            // install css
+            const styleElement = document.createElement('style');
+            styleElement.innerHTML = `
+
+                    .red-strobe {
+                       animation: strobe 1s infinite;
+                    }
+
+                    @keyframes strobe {
+                        0%, 100% {
+                            background-color: black;
+                        }
+                        50% {
+                            background-color: red;
+                        }
+                    }
+
+                    #container {
+                        background-color: yellow;
+                        position: absolute;
+                        top: 0;
+                        left: 0  ;
+                        height : 100vh;
+                        width  : 100vw;
+                    }
+
+                    .door {
+                        position: absolute;
+                        background-color: green;
+                        width : 50%;
+                        height : 100px;
+
+                    }
+
+
+                    #right-door {
+                        left: 100vw;
+                        animation-duration: 3s;
+                        animation-name: leftDoorSlide;
+                    }
+
+                    #left-door {
+                        left: -50vw;
+                        animation-duration: 3s;
+                        animation-name: rightDoorSlide;
+                    }
+
+                    @keyframes rightDoorSlide {
+                        0% {
+                            left: 50vw;
+                        }
+                        100% {
+                            left: 100vw;
+                        }
+                    }
+
+                    @keyframes leftDoorSlide {
+                        0% {
+                            left: 0vw;
+                        }
+                        100% {
+                            left: -50vw;
+                        }
+                    }
+            `;
+            document.head.appendChild(styleElement);
+
+            container.classList.add('red-strobe')
+
+
+            setTimeout(function () {
+                container.classList.remove('red-strobe');
+            },  5 * 1000);
+        }
+
+
+        function registerCallbackOnJava(callback) {
+            const javaChoicesContainer = document.querySelector(
+                "#main > form > div.colset.colset-main > div.left > div > div:nth-child(3) > div > div:nth-child(7) > div");
+            javaChoicesContainer.childNodes.item(javaChoicesContainer.childNodes.length - 1)
+                .addEventListener('click', callback)
+        }
+
+        // registerCallbackOnJava( install)
+        window.addEventListener('load', (event) => setTimeout(install, 500));
+    </script>
+
+</head>
+<body>
+
+<h1> this is a page full of content
+</h1>
+<p>
+    Pasqua Rosée (fl. 1651–1658) opened the first coffee-house in London and possibly Britain.
+    He was born in the Republic of Ragusa (now southernmost Croatia). In 1651 he became the servant of Daniel Edwards,
+    an English merchant of the Levant Company living in Smyrna (now İzmir, Turkey); Rosée prepared Edwards's daily
+    coffee. After Edwards returned to London, he set up Rosée as the proprietor of a coffee-house near the Royal
+    Exchange. As Rosée was not a freeman of the City of London he was not able to trade; accordingly Edwards had the
+    freeman Christopher "Kitt" Bowman join Rosée as a partner. The last known reference to Rosée was in 1658, after
+    which Bowman ran the shop with his wife until his death in 1662. The building was destroyed in the 1666 Great Fire
+    of London. On its location is a late-19th-century structure, housing—in the 21st century—a pub, the Jamaica Wine
+    House; a commemorative plaque (shown) is now on the spot, unveiled in 1952—the tercentenary of the founding of
+    Rosée's shop. (Full article...)
+
+
+</p>
+
+</body>
+</html>
+

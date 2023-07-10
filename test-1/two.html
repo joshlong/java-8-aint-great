@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <!--    <meta name="viewport" content="width=device-width,initial-scale=1.0">-->
+    <title>
+        A Spring Intervention
+    </title>
+
+
+    <script>
+
+        /*
+         * all of this should be used in the plugin's `content.js`
+         */
+        function defend() {
+
+            // install html
+
+            function createDivWithAttributes(nodeId, attrs) {
+                const d = document.createElement('div')
+                d.setAttribute('id', nodeId)
+                if (attrs) {
+                    if (attrs.classList) {
+                        attrs.classList.forEach(cn => d.classList.add(cn))
+                    }
+                }
+                return d;
+            }
+
+            document.body.appendChild(createDivWithAttributes('spring-intervention'))
+            document.body.appendChild(createDivWithAttributes('left', ['door']))
+            document.body.appendChild(createDivWithAttributes('right', ['door']))
+
+
+            // install css
+            const styleElement = document.createElement('style');
+            styleElement.innerHTML = `
+
+                    #spring-intervention {
+
+                        z-index: 500;
+                        width: 100%;
+                        position: absolute;
+                        top:0;
+                        left:0;
+                        height: 100vh;
+                        background-color: black;
+                        overflow: hidden;
+
+                    }
+
+                    .door {
+                        z-index: 600;
+                        position: absolute;
+                        width : 500px;
+                        top:  0;
+                        bottom: 0 ;
+                        height : 100vh;
+                        background-color: gray;
+                    }
+
+                    #left  {
+                        left : -500px;
+
+                    }
+
+                    #right {
+                        right : -500px;
+                    }
+
+                    #spring-intervention.red-strobe {
+                        animation: strobe 1s infinite;
+                    }
+
+                    @keyframes strobe {
+                        0%, 100% {
+                            background-color: black;
+                        }
+                        50% {
+                            background-color: red;
+                        }
+                    }
+                    `;
+            document.head.appendChild(styleElement);
+
+            const leftDoor = document.getElementById('left');
+            const rightDoor = document.getElementById('right');
+            const container = document.getElementById('spring-intervention');
+
+            function arrangeDoor(door) {
+                door.classList.add('door')
+            }
+
+            [leftDoor, rightDoor].forEach(door => arrangeDoor(door))
+
+            const durationUntilAlarmStops = 5 * 1000;// 5s
+
+            leftDoor.style.transform = "translateX(-100%)";
+            rightDoor.style.transform = "translateX(100%)";
+            container.classList.add('red-strobe');
+
+            setTimeout(function () {
+                container.classList.remove('red-strobe');
+            }, durationUntilAlarmStops);
+        }
+
+
+        function registerCallbackOnJava(callback) {
+            const javaChoicesContainer = document.querySelector(
+                "#main > form > div.colset.colset-main > div.left > div > div:nth-child(3) > div > div:nth-child(7) > div");
+            const last = javaChoicesContainer.childNodes.item(javaChoicesContainer.childNodes.length - 1);
+            last.addEventListener('click', callback)
+        }
+
+        window.addEventListener('load', (event) => setTimeout(defend, 1000));
+    </script>
+
+</head>
+<body>
+
+<h1> this is a page full of content
+</h1>
+<p>
+    Pasqua Rosée (fl. 1651–1658) opened the first coffee-house in London and possibly Britain.
+    He was born in the Republic of Ragusa (now southernmost Croatia). In 1651 he became the servant of Daniel Edwards,
+    an English merchant of the Levant Company living in Smyrna (now İzmir, Turkey); Rosée prepared Edwards's daily
+    coffee. After Edwards returned to London, he set up Rosée as the proprietor of a coffee-house near the Royal
+    Exchange. As Rosée was not a freeman of the City of London he was not able to trade; accordingly Edwards had the
+    freeman Christopher "Kitt" Bowman join Rosée as a partner. The last known reference to Rosée was in 1658, after
+    which Bowman ran the shop with his wife until his death in 1662. The building was destroyed in the 1666 Great Fire
+    of London. On its location is a late-19th-century structure, housing—in the 21st century—a pub, the Jamaica Wine
+    House; a commemorative plaque (shown) is now on the spot, unveiled in 1952—the tercentenary of the founding of
+    Rosée's shop. (Full article...)
+
+
+</p>
+
+</body>
+</html>
+
