@@ -1,7 +1,3 @@
-
-/*
- * all of this should be used in the plugin's `content.js`
- */
 function install() {
 
     // install html
@@ -44,7 +40,6 @@ function install() {
 
                     #container {
                         z-index: 10000;
-                        background-color: yellow;
                         position: absolute;
                         top: 0;
                         left: 0  ;
@@ -54,28 +49,40 @@ function install() {
 
                     .door {
                         position: absolute;
-                        background-color: green;
                         width : 50%;
-                        height : 100px;
+                        height : 100vh;
 
                     }
-
 
                     #right-door {
                         left: 100vw;
                         animation-duration: 3s;
-                        animation-name: leftDoorSlide;
+                        animation-name: rightDoorSlide;
+                        
+                        
+                        background-image: url("../images/right-door-w.png");
+                        background-repeat: no-repeat;
+                        background-position-x: 0px;
+                        background-size: 50vw  100vh ;
+
                     }
 
                     #left-door {
                         left: -50vw;
                         animation-duration: 3s;
-                        animation-name: rightDoorSlide;
+                        animation-name: leftDoorSlide;
+                        background-image: url("../images/left-door-w.png");
+                        background-repeat: no-repeat;
+                        background-position-x: 0px;
+                        background-size: 50vw  100vh ;
                     }
 
                     @keyframes rightDoorSlide {
                         0% {
                             left: 50vw;
+                        }
+                        10% {
+                            left : 55vw;
                         }
                         100% {
                             left: 100vw;
@@ -85,6 +92,9 @@ function install() {
                     @keyframes leftDoorSlide {
                         0% {
                             left: 0vw;
+                        }
+                        10% {
+                            left : -5vw;
                         }
                         100% {
                             left: -50vw;
@@ -98,16 +108,19 @@ function install() {
 
     setTimeout(function () {
         container.classList.remove('red-strobe');
-    },  5 * 1000);
+    }, 5 * 1000);
 }
-
 
 function registerCallbackOnJava(callback) {
     const javaChoicesContainer = document.querySelector(
         "#main > form > div.colset.colset-main > div.left > div > div:nth-child(3) > div > div:nth-child(7) > div");
-    javaChoicesContainer.childNodes.item(javaChoicesContainer.childNodes.length - 1)
-        .addEventListener('click', callback)
+
+    console.log('going to install the check, maybe..');
+    
+    if (javaChoicesContainer) {
+        javaChoicesContainer.childNodes.item(javaChoicesContainer.childNodes.length - 1).addEventListener('click', callback) ;
+        console.log('installed the java 8 check!')
+    }
 }
 
-registerCallbackOnJava( install)
-// window.addEventListener('load', (event) => setTimeout(install, 500));
+registerCallbackOnJava(install)
