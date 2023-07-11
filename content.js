@@ -3,8 +3,43 @@
 
 const root = {
     alarmAudio: null,
-    rightDoor: null, leftDoor: null, container: null
+    video: null,
+    rightDoor: null,
+    leftDoor: null,
+    container: null
 };
+
+function installVideo() {
+
+    const html = `
+        <video id="video">
+            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                    type="video/mp4"/>
+        </video>
+    `;
+
+    const htmlDivElement = document.createElement('div')
+    htmlDivElement.innerHTML = html;
+    root.video = htmlDivElement.childNodes.item(1);
+    root.container.appendChild(root.video);
+    return root.video
+}
+
+function installAudio() {
+    const mp3 = 'https://github.com/joshlong/java-8-aint-great-assets/raw/main/audio/alarms_mixdown.mp3'
+    const html = `
+    <audio controls>
+        <source src="${mp3}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    `;
+    const audio = document.createElement('div')
+    audio.innerHTML = html
+    const audioElement = audio.childNodes.item(1);
+    audioElement.style.display = 'none'
+    document.body.appendChild(audioElement);
+    return audioElement
+}
 
 function install() {
 
@@ -126,38 +161,30 @@ function install() {
                             left: -50vw;
                         }
                     }
+                    
+                    #video { 
+                     display: none; 
+                     width : 100vw; 
+                    }
             `;
     document.head.appendChild(styleElement);
 
     // install the audio file
-    const mp3 = 'https://github.com/joshlong/java-8-aint-great-assets/raw/main/audio/alarms_mixdown.mp3'
-    const html = `
-    <audio controls>
-        <source src="${mp3}" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    `;
-    const audio = document.createElement('div')
-    audio.innerHTML = html
-    const audioElement = audio.childNodes.item(1);
-    audioElement.style.display = 'none'
-    console.log('audio element ' + audioElement);
-    document.body.appendChild(audioElement);
-
-    root.alarmAudio = audioElement;
+    root.alarmAudio = installAudio();
     root.rightDoor = document.getElementById('right-door')
     root.leftDoor = document.getElementById('left-door')
     root.container = document.getElementById('container')
-
+    root.video = installVideo()
 }
+
 
 function triggerAlarms() {
 
     root.alarmAudio.play();
+    root.video.style.display = 'block'
+    root.video.play();
 
-    [root.rightDoor, root.leftDoor].forEach(door => {
-        door.classList.add('animated-door')
-    })
+    [root.rightDoor, root.leftDoor].forEach(door => door.classList.add('animated-door'));
 
     root.container.style.display = 'block';
     root.container.classList.add('red-strobe');
@@ -167,6 +194,7 @@ function triggerAlarms() {
         root.container.classList.remove('red-strobe');
     }, 10 * 1000);
 }
+
 
 function registerCallbackOnJava(callback) {
     const javaChoicesContainer = document.querySelector("#main > form > div.colset.colset-main > div.left > div > div:nth-child(3) > div > div:nth-child(7) > div");
