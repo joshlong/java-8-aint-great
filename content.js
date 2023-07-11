@@ -144,7 +144,7 @@ function install() {
     console.log('audio element ' + audioElement);
     document.body.appendChild(audioElement);
 
-    root.alarmAudio = audioElement ;
+    root.alarmAudio = audioElement;
     root.rightDoor = document.getElementById('right-door')
     root.leftDoor = document.getElementById('left-door')
     root.container = document.getElementById('container')
@@ -176,8 +176,6 @@ function registerCallbackOnJava(callback) {
         javaChoicesContainer.childNodes.item(javaChoicesContainer.childNodes.length - 1).addEventListener('click', callback);
     }
 }
-
-
 
 window.addEventListener('load', (e) => {
     install()
