@@ -21,7 +21,7 @@ function installVideo() {
     const htmlDivElement = document.createElement('div')
     htmlDivElement.innerHTML = html;
     root.video = htmlDivElement.childNodes.item(1);
-    root.container.appendChild(root.video);
+    document.body.appendChild(root.video);
     return root.video
 }
 
@@ -86,9 +86,11 @@ function install() {
 
                     @keyframes strobe {
                         0%, 100% {
-                            background-color: black;
+                            
+                             
                         }
                         50% {
+                            
                             background-color: red;
                         }
                     }
@@ -161,11 +163,17 @@ function install() {
                             left: -50vw;
                         }
                     }
-                    
+                                        
                     #video { 
-                     display: none; 
-                     width : 100vw; 
+                        z-index: 500 ;
+                        display: none; 
+                        position : absolute; 
+                        top: 0;
+                        left: 0; 
+                        width:   100vw; 
                     }
+                    
+                    
             `;
     document.head.appendChild(styleElement);
 
