@@ -10,30 +10,12 @@
 
     <script src="../content.js"></script>
     <script>
-        window.addEventListener('load', (event) => setTimeout(install, 500));
+        document.addEventListener('click', () => {
+            setTimeout(triggerAlarms, 1000)
+        });
     </script>
-    <!--    <style>
-            html, body {
-                padding: 0;
-                margin: 0;
-            }
 
-            #door {
-                z-index: 100000;
-                border: 1px solid red;
-                position: absolute;
-                top: 0 ;
-                left: 0;
-                width: 100vw ;
-                height: 100vh;
-                /* should be relative to the CSS file, NOT the document. */
-                background-image: url("../images/left-door-w.png");
-                background-repeat: no-repeat;
-                background-position-x: 0px;
-                background-size: 50vw  100vh ;
-                background-color: yellow;
-            }
-        </style>-->
+
 </head>
 <body>
 

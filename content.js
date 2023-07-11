@@ -1,6 +1,27 @@
+// todo install the html and css and dom structure, but don't _start_ anything. somehow it's got to be possible to decouple the animation from the install
+
+
+const root = {
+    rightDoor: null, leftDoor: null, container: null
+};
+
 function install() {
 
+    console.log('running installation of the scene')
     // install html
+
+    const rightDoorImage = 'https://github.com/joshlong/java-8-aint-great-assets/blob/main/images/right-door-w.png?raw=true';
+    const leftDoorImage = 'https://github.com/joshlong/java-8-aint-great-assets/blob/main/images/left-door-w.png?raw=true';
+
+    [leftDoorImage, rightDoorImage].forEach(url => {
+        const link = document.createElement('link')
+        link.setAttribute('rel', 'preload')
+        link.setAttribute('as', 'image')
+        link.setAttribute('href', url)
+        document.head.appendChild(link)
+
+        console.log('just added preload image for ' + url)
+    })
 
     function createDivWithAttributes(nodeId, attrs) {
         const d = document.createElement('div')
@@ -14,12 +35,10 @@ function install() {
     }
 
     document.body.appendChild(createDivWithAttributes('container'))
-    document.getElementById('container').appendChild(createDivWithAttributes('left-door', {classList: ['door']}))
-    document.getElementById('container').appendChild(createDivWithAttributes('right-door', {classList: ['door']}))
-
-    const leftDoor = document.getElementById('left-door');
-    const rightDoor = document.getElementById('right-door');
     const container = document.getElementById('container');
+    container.appendChild(createDivWithAttributes('left-door', {classList: ['door']}))
+    container.appendChild(createDivWithAttributes('right-door', {classList: ['door']}))
+
 
     // install css
     const styleElement = document.createElement('style');
@@ -39,44 +58,50 @@ function install() {
                     }
 
                     #container {
-                        z-index: 10000;
+                        z-index: 100000;
                         position: absolute;
                         top: 0;
                         left: 0  ;
                         height : 100vh;
                         width  : 100vw;
+                        display: none; 
                     }
 
                     .door {
                         position: absolute;
-                        width : 50%;
-                        height : 100vh;
-
+                        width: 50%;
+                        height: 100vh;
+                        background-color: yellow;
                     }
 
                     #right-door {
                         left: 100vw;
-                        animation-duration: 3s;
-                        animation-name: rightDoorSlide;
-                        
-                        
-                        background-image: url("../images/right-door-w.png");
+                        background-image: url("${rightDoorImage}");
                         background-repeat: no-repeat;
                         background-position-x: 0px;
                         background-size: 50vw  100vh ;
-
                     }
 
                     #left-door {
                         left: -50vw;
-                        animation-duration: 3s;
-                        animation-name: leftDoorSlide;
-                        background-image: url("../images/left-door-w.png");
+                        background-image: url("${leftDoorImage}");
                         background-repeat: no-repeat;
                         background-position-x: 0px;
                         background-size: 50vw  100vh ;
                     }
-
+                    
+                    .animated-door {
+                        animation-duration: 3s;
+                    }
+                     
+                    #left-door.animated-door {
+                        animation-name: leftDoorSlide;
+                    }
+                    
+                    #right-door.animated-door {
+                        animation-name: rightDoorSlide;
+                    } 
+                    
                     @keyframes rightDoorSlide {
                         0% {
                             left: 50vw;
@@ -103,24 +128,55 @@ function install() {
             `;
     document.head.appendChild(styleElement);
 
-    container.classList.add('red-strobe')
+    root.rightDoor = document.getElementById('right-door')
+    root.leftDoor = document.getElementById('left-door')
+    root.container = document.getElementById('container')
 
+}
+
+function triggerAlarms() {
+    [root.rightDoor, root.leftDoor].forEach(door => {
+        door.classList.add('animated-door')
+    })
+
+    root.container.style.display = 'block';
+    root.container.classList.add('red-strobe');
 
     setTimeout(function () {
-        container.classList.remove('red-strobe');
+        root.container.classList.remove('red-strobe');
     }, 5 * 1000);
 }
 
-function registerCallbackOnJava(callback) {
-    const javaChoicesContainer = document.querySelector(
-        "#main > form > div.colset.colset-main > div.left > div > div:nth-child(3) > div > div:nth-child(7) > div");
+function playSound() {
+    const mp3 = 'https://github.com/joshlong/java-8-aint-great-assets/raw/main/audio/alarms_mixdown.mp3'
+    const html = `
+    <audio controls>
+        <source src="${mp3}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    `;
+    const nHtml = `
+          <embed src="${mp3}" loop="true" autostart="true" width="2" height="0" />
+    `;
+    const audio = document.createElement('div')
+    audio.innerHTML = html
+    const audioElement = audio.childNodes.item(1);
+    console.log('audio element ' + audioElement);
+    document.body.appendChild(audioElement);
+    // audioElement.play()
 
-    console.log('going to install the check, maybe..');
-    
+}
+
+function registerCallbackOnJava(callback) {
+    const javaChoicesContainer = document.querySelector("#main > form > div.colset.colset-main > div.left > div > div:nth-child(3) > div > div:nth-child(7) > div");
+
     if (javaChoicesContainer) {
-        javaChoicesContainer.childNodes.item(javaChoicesContainer.childNodes.length - 1).addEventListener('click', callback) ;
-        console.log('installed the java 8 check!')
+        console.log('resolved the java 8 checkbox.')
+        javaChoicesContainer.childNodes.item(javaChoicesContainer.childNodes.length - 1).addEventListener('click', callback);
     }
 }
 
-registerCallbackOnJava(install)
+window.addEventListener('load', (e) => {
+    install()
+    registerCallbackOnJava(triggerAlarms)
+})
