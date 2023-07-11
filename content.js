@@ -2,6 +2,7 @@
 
 
 const root = {
+    alarmAudio: null,
     rightDoor: null, leftDoor: null, container: null
 };
 
@@ -91,7 +92,7 @@ function install() {
                     }
                     
                     .animated-door {
-                        animation-duration: 3s;
+                        animation-duration: 6s;
                     }
                      
                     #left-door.animated-door {
@@ -128,6 +129,22 @@ function install() {
             `;
     document.head.appendChild(styleElement);
 
+    // install the audio file
+    const mp3 = 'https://github.com/joshlong/java-8-aint-great-assets/raw/main/audio/alarms_mixdown.mp3'
+    const html = `
+    <audio controls>
+        <source src="${mp3}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    `;
+    const audio = document.createElement('div')
+    audio.innerHTML = html
+    const audioElement = audio.childNodes.item(1);
+    audioElement.style.display = 'none'
+    console.log('audio element ' + audioElement);
+    document.body.appendChild(audioElement);
+
+    root.alarmAudio = audioElement ;
     root.rightDoor = document.getElementById('right-door')
     root.leftDoor = document.getElementById('left-door')
     root.container = document.getElementById('container')
@@ -135,6 +152,9 @@ function install() {
 }
 
 function triggerAlarms() {
+
+    root.alarmAudio.play();
+
     [root.rightDoor, root.leftDoor].forEach(door => {
         door.classList.add('animated-door')
     })
@@ -143,28 +163,9 @@ function triggerAlarms() {
     root.container.classList.add('red-strobe');
 
     setTimeout(function () {
+        root.alarmAudio.pause()
         root.container.classList.remove('red-strobe');
-    }, 5 * 1000);
-}
-
-function playSound() {
-    const mp3 = 'https://github.com/joshlong/java-8-aint-great-assets/raw/main/audio/alarms_mixdown.mp3'
-    const html = `
-    <audio controls>
-        <source src="${mp3}" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    `;
-    const nHtml = `
-          <embed src="${mp3}" loop="true" autostart="true" width="2" height="0" />
-    `;
-    const audio = document.createElement('div')
-    audio.innerHTML = html
-    const audioElement = audio.childNodes.item(1);
-    console.log('audio element ' + audioElement);
-    document.body.appendChild(audioElement);
-    // audioElement.play()
-
+    }, 10 * 1000);
 }
 
 function registerCallbackOnJava(callback) {
@@ -175,6 +176,8 @@ function registerCallbackOnJava(callback) {
         javaChoicesContainer.childNodes.item(javaChoicesContainer.childNodes.length - 1).addEventListener('click', callback);
     }
 }
+
+
 
 window.addEventListener('load', (e) => {
     install()
