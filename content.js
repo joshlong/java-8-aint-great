@@ -13,7 +13,7 @@ function installVideo() {
 
     const html = `
         <video id="video">
-            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+            <source src="https://github.com/joshlong/java-8-aint-great-assets/raw/main/videos/java-8-aint-great.mp4"
                     type="video/mp4"/>
         </video>
     `;
